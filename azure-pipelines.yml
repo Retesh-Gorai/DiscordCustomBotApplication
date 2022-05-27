@@ -1,7 +1,4 @@
 # Go
-# Build your Go project.
-# Add steps that test, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/go
 
 trigger:
 - master
@@ -20,22 +17,23 @@ steps:
   inputs: 
    contents: '**'
    TargetFolder: '${Build.ArtifactStagingDirectory}'
-   
-    
- - task: PublishBuildArtifacts@1
-   inputs: 
-    PathtoPublish: '${Build.ArtifactStagingDirectory}'
+  
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+
+- task: GoTool@0
+  inputs:
+    version: '1.10'
+
     
-    
- - task: GoTool@0
-   inputs:
-    version: '1.18'
-    
-  - task: Go@0
-    inputs:
-      command: 'build'
-      workingDirectory: '${Build.ArtifactStagingDirectory}/main'
+- task: Go@0
+  inputs:
+    command: 'build'
+    workingDirectory: '${Build.ArtifactStagingDirectory}/main'
     
     
     
